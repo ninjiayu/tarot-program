@@ -219,23 +219,23 @@ const translations = {
   },
   zh: {
     // App / Header / Nav
-    dailyTarotGuidance: '每日塔罗指引',
-    readings: '塔罗牌阵',
+    dailyTarotGuidance: '每日塔罗',
+    readings: '牌阵',
     journal: '日记',
     mood: '心情',
     viewDisclaimer: '查看免责声明',
     footerText: '仅供娱乐和自我反思之用，不能替代专业建议。',
 
     // HomePage
-    findClarity: '找到清晰，',
-    trustYourIntuition: '相信你的直觉',
-    archetypalWisdom: '用原型智慧进行正念反思。开始你的日常练习。',
+    findClarity: '聆听内心，',
+    trustYourIntuition: '让直觉引路',
+    archetypalWisdom: '每一张牌都是一面镜子，映照当下的你。静心抽取，开启今日对话。',
     dailyCard: '每日一牌',
-    oneCardDailyInsight: '一张牌，每日洞见',
+    oneCardDailyInsight: '一张牌，读懂今天',
     pastPresentFuture: '过去 \u00b7 现在 \u00b7 未来',
-    timelineReading: '时间线牌阵',
-    spreadLibrary: '经典牌阵库',
-    whatClarity: '你想在什么事情上获得清晰？（可选）',
+    timelineReading: '时间线解读',
+    spreadLibrary: '更多牌阵',
+    whatClarity: '你想问什么？（选填）',
     beginReading: '开始占卜',
     cancel: '取消',
 
@@ -252,10 +252,10 @@ const translations = {
     rev: '逆位',
 
     // ShufflingAnimation
-    focusOnQuestion: '专注你的问题...',
-    breatheDeeply: '深呼吸，让你的思绪平静下来',
-    cardsAligningWithEnergy: '塔罗牌正在与你的能量对齐',
-    yourReadingIsReady: '你的占卜已准备就绪...',
+    focusOnQuestion: '静心冥想你的问题...',
+    breatheDeeply: '深呼吸，让思绪沉淀',
+    cardsAligningWithEnergy: '牌在感应你的能量',
+    yourReadingIsReady: '准备就绪...',
 
     // AIInterpreter
     quickInsight: '快速解读',
