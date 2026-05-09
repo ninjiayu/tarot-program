@@ -31,7 +31,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-void relative overflow-hidden">
+    <div className="min-h-screen bg-void relative overflow-hidden flex flex-col">
       {/* Subtle background gradient */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-mystic-900/10 rounded-full blur-3xl" />
@@ -114,7 +114,7 @@ function App() {
       </motion.header>
 
       {/* Main content */}
-      <main className="relative z-10 max-w-5xl mx-auto px-4 pb-20">
+      <main className="relative max-w-5xl mx-auto px-4 pb-20 flex-1 w-full">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <div key="home-container">
@@ -168,8 +168,8 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* Footer - fixed at bottom */}
-      <footer className="fixed bottom-0 left-0 right-0 z-10 py-4 text-center bg-void/80 backdrop-blur-sm">
+      {/* Footer */}
+      <footer className="relative z-10 py-6 text-center shrink-0">
         <p className="text-white/20 text-xs px-4">
           {t('footerText')}
         </p>
