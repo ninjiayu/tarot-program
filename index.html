@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/tarot-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a14" />
+    <meta name="description" content="Daily tarot guidance for mindful reflection and intuitive growth." />
+    <title>Loran Tarot</title>
+    
+    <!-- Fonts: Inter for body, DM Serif Display for headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Splash screen background -->
+    <style>
+      body {
+        margin: 0;
+        background: #0a0a14;
+      }
+      #splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, #0a0a14 0%, #12121f 100%);
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+      #splash.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #splash .logo {
+        width: 64px;
+        height: 64px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      #splash .title {
+        font-family: 'DM Serif Display', serif;
+        font-size: 32px;
+        color: #f5f5f7;
+        margin-top: 16px;
+        letter-spacing: 0.05em;
+      }
+      #splash .subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        color: rgba(245, 245, 247, 0.5);
+        margin-top: 8px;
+        font-weight: 300;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.05); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash">
+      <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" stroke="url(#grad1)" stroke-width="1.5"/>
+        <circle cx="32" cy="32" r="20" stroke="url(#grad1)" stroke-width="1" opacity="0.5"/>
+        <circle cx="32" cy="32" r="8" fill="url(#grad1)" opacity="0.8"/>
+        <path d="M32 12 L32 52" stroke="url(#grad1)" stroke-width="0.5" opacity="0.3"/>
+        <path d="M12 32 L52 32" stroke="url(#grad1)" stroke-width="0.5" opacity="0.3"/>
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a78bfa"/>
+            <stop offset="100%" stop-color="#fbbf24"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="title">Loran Tarot</div>
+      <div class="subtitle">Daily Tarot Guidance</div>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Hide splash when app is ready
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const splash = document.getElementById('splash');
+          if (splash) {
+            splash.classList.add('fade-out');
+            setTimeout(() => splash.remove(), 500);
+          }
+        }, 1500);
+      });
+    </script>
+  </body>
+</html>
