@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, Gift, Sparkles } from 'lucide-react'
 import { getCheckinData, doCheckin } from '../utils/storage'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function DailyCheckin() {
   const [checkinData, setCheckinData] = useState(getCheckinData())
   const [showReward, setShowReward] = useState(false)
+  const { t } = useLanguage()
 
   const handleCheckin = () => {
     const result = doCheckin()
@@ -30,8 +32,8 @@ function DailyCheckin() {
           <Calendar className="w-5 h-5 text-mystic-400" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-cream">Daily Check-in</h3>
-          <p className="text-white/30 text-xs">Build your practice, one day at a time</p>
+          <h3 className="text-lg font-semibold text-cream">{t('dailyCheckin')}</h3>
+          <p className="text-white/30 text-xs">{t('buildYourPractice')}</p>
         </div>
       </div>
 
@@ -39,22 +41,22 @@ function DailyCheckin() {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="text-center">
           <div className="text-2xl font-semibold text-mystic-400">{checkinData.streak}</div>
-          <div className="text-white/30 text-xs">Day streak</div>
+          <div className="text-white/30 text-xs">{t('streak')}</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-semibold text-cream">{checkinData.totalDays}</div>
-          <div className="text-white/30 text-xs">Total days</div>
+          <div className="text-white/30 text-xs">{t('totalDaysCheckin')}</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-semibold text-cosmic-400">{checkinData.coupons}</div>
-          <div className="text-white/30 text-xs">Reading passes</div>
+          <div className="text-white/30 text-xs">{t('readingPasses')}</div>
         </div>
       </div>
 
       {/* Progress bar */}
       <div className="mb-6">
         <div className="flex justify-between text-xs text-white/25 mb-2">
-          <span>Progress</span>
+          <span>{t('progress')}</span>
           <span>{Math.round(progress)}%</span>
         </div>
         <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -66,7 +68,7 @@ function DailyCheckin() {
           />
         </div>
         <p className="text-white/20 text-xs mt-2 text-center">
-          Check in 7 days in a row to earn a Deep Reading Pass
+          {t('checkin7Days')}
         </p>
       </div>
 
@@ -80,7 +82,7 @@ function DailyCheckin() {
             animate={{ opacity: 1 }}
           >
             <Sparkles className="w-4 h-4" />
-            Checked in today. See you tomorrow ✨
+            {t('checkedInToday')}
           </motion.div>
         ) : (
           <motion.button
@@ -91,7 +93,7 @@ function DailyCheckin() {
             whileTap={{ scale: 0.98 }}
           >
             <Sparkles className="w-4 h-4 inline-block mr-1.5" />
-            Check In Today
+            {t('checkIn')}
           </motion.button>
         )}
       </AnimatePresence>
@@ -106,8 +108,8 @@ function DailyCheckin() {
             exit={{ opacity: 0, y: -8 }}
           >
             <Gift className="w-6 h-6 text-cosmic-400 mx-auto mb-1.5" />
-            <p className="text-cosmic-400 font-semibold text-sm">Reward earned!</p>
-            <p className="text-white/40 text-xs">Deep Reading Pass × 1 added to your account</p>
+            <p className="text-cosmic-400 font-semibold text-sm">{t('milestoneReached')}</p>
+            <p className="text-white/40 text-xs">{t('deepReadingPassAdded')}</p>
           </motion.div>
         )}
       </AnimatePresence>

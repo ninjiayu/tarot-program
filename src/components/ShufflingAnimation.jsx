@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function ShufflingAnimation({ cardCount, onComplete }) {
+  const { t } = useLanguage()
   const [shufflePhase, setShufflePhase] = useState('gather') // gather | fan | shuffle | settle | done
   const [particles, setParticles] = useState([])
   const [cardPositions] = useState(() => {
@@ -261,10 +263,10 @@ function ShufflingAnimation({ cardCount, onComplete }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {shufflePhase === 'gather' && 'Focus on your question...'}
-          {shufflePhase === 'fan' && 'Breathe deeply, let your mind settle'}
-          {shufflePhase === 'shuffle' && 'The cards are aligning with your energy'}
-          {shufflePhase === 'settle' && 'Your reading is ready...'}
+          {shufflePhase === 'gather' && t('focusOnQuestion')}
+          {shufflePhase === 'fan' && t('breatheDeeply')}
+          {shufflePhase === 'shuffle' && t('cardsAligningWithEnergy')}
+          {shufflePhase === 'settle' && t('yourReadingIsReady')}
         </motion.p>
 
         {/* Subtle breathing indicator */}

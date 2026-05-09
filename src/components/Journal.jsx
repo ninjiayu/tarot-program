@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookOpen, Plus, Trash2, Calendar, ChevronRight } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 const STORAGE_KEY = 'aura_journal'
 
@@ -30,6 +31,7 @@ function Journal() {
   const [entries, setEntries] = useState(getJournalEntries())
   const [showNewEntry, setShowNewEntry] = useState(false)
   const [newEntry, setNewEntry] = useState({ mood: null, text: '', title: '' })
+  const { t } = useLanguage()
 
   const handleSave = () => {
     if (!newEntry.text.trim()) return
@@ -57,8 +59,8 @@ function Journal() {
 
   const formatDate = (iso) => {
     const date = new Date(iso)
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
       day: 'numeric',
       year: 'numeric'
     })
@@ -73,8 +75,8 @@ function Journal() {
             <BookOpen className="w-5 h-5 text-mystic-400" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-cream">Journal</h3>
-            <p className="text-white/40 text-xs">Your private reflections</p>
+            <h3 className="text-lg font-semibold text-cream">{t('journal')}</h3>
+            <p className="text-white/40 text-xs">{t('privateReflections')}</p>
           </div>
         </div>
 
@@ -103,23 +105,23 @@ function Journal() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
             >
-              <h4 className="text-lg font-semibold text-cream mb-4">New Reflection</h4>
+              <h4 className="text-lg font-semibold text-cream mb-4">{t('newEntry')}</h4>
 
               {/* Mood selector */}
               <div className="mb-4">
-                <label className="text-white/50 text-sm mb-2 block">How are you feeling?</label>
+                <label className="text-white/50 text-sm mb-2 block">{t('howAreYouFeeling')}</label>
                 <div className="flex gap-2 flex-wrap">
                   {moodOptions.map((mood) => (
                     <button
                       key={mood.label}
                       onClick={() => setNewEntry(prev => ({ ...prev, mood }))}
                       className={`px-3 py-2 rounded-full text-sm transition-all
-                                 ${newEntry.mood?.label === mood.label 
-                                   ? `${mood.color} ring-1 ring-white/20` 
+                                 ${newEntry.mood?.label === mood.label
+                                   ? `${mood.color} ring-1 ring-white/20`
                                    : 'bg-white/5 text-white/40 hover:bg-white/10'}`}
                     >
                       <span className="mr-1">{mood.emoji}</span>
-                      {mood.label}
+                      {t(mood.label.toLowerCase())}
                     </button>
                   ))}
                 </div>
@@ -130,7 +132,7 @@ function Journal() {
                 type="text"
                 value={newEntry.title}
                 onChange={(e) => setNewEntry(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="Title (optional)"
+                placeholder={t('titleOptional')}
                 className="input-mystical w-full px-4 py-3 mb-3 text-sm"
               />
 
@@ -138,7 +140,7 @@ function Journal() {
               <textarea
                 value={newEntry.text}
                 onChange={(e) => setNewEntry(prev => ({ ...prev, text: e.target.value }))}
-                placeholder="What's on your mind? What insights did today's reading bring?"
+                placeholder={t('whatsOnYourMind')}
                 className="input-mystical w-full px-4 py-3 mb-4 text-sm resize-none h-32"
               />
 
@@ -146,10 +148,10 @@ function Journal() {
               <div className="flex gap-3">
                 <button
                   onClick={() => { setShowNewEntry(false); setNewEntry({ mood: null, text: '', title: '' }) }}
-                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white/50 
+                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white/50
                              hover:bg-white/5 transition-colors text-sm"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   onClick={handleSave}
@@ -157,7 +159,7 @@ function Journal() {
                   className="flex-1 px-4 py-3 rounded-xl btn-mystical text-sm
                              disabled:opacity-30 disabled:cursor-not-allowed"
                 >
-                  Save Reflection
+                  {t('saveEntry')}
                 </button>
               </div>
             </motion.div>
@@ -169,8 +171,8 @@ function Journal() {
       {entries.length === 0 ? (
         <div className="text-center py-12">
           <Calendar className="w-12 h-12 text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No reflections yet</p>
-          <p className="text-white/30 text-xs mt-1">Start journaling your insights and growth</p>
+          <p className="text-white/40 text-sm">{t('noEntriesYet')}</p>
+          <p className="text-white/30 text-xs mt-1">{t('startWriting')}</p>
         </div>
       ) : (
         <div className="space-y-3">

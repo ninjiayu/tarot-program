@@ -6,11 +6,13 @@ import AIInterpreter from './AIInterpreter'
 import ShufflingAnimation from './ShufflingAnimation'
 import { getSpreadConfig } from '../data/spreadData'
 import { saveToHistory } from '../utils/storage'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function ReadingView({ readingData, onBack }) {
   const [phase, setPhase] = useState('shuffling') // shuffling | dealing | ready | interpreting
   const [revealedCards, setRevealedCards] = useState(new Set())
   const [showInterpretation, setShowInterpretation] = useState(false)
+  const { t } = useLanguage()
 
   const { type, cards, userQuestion } = readingData
   const config = getSpreadConfig(type)
@@ -56,6 +58,22 @@ function ReadingView({ readingData, onBack }) {
 
   const allRevealed = revealedCards.size >= cards.length
 
+  const translatePositionName = (name) => {
+    const map = {
+      'Past': 'past', 'Present': 'present', 'Future': 'future',
+      "Today's Energy": 'todayEnergy',
+      'Root Cause': 'rootCause', 'Current State': 'currentState', 'Guidance': 'guidance',
+      'Current Situation': 'situation', 'Path A': 'pathA', 'Outcome A': 'outcomeA',
+      'Path B': 'pathB', 'Outcome B': 'outcomeB',
+      'Your Feelings': 'you', 'Their Feelings': 'partner', 'Current Dynamic': 'dynamic',
+      'Your Block': 'yourBlock', 'Their Block': 'theirBlock', 'Trajectory': 'trajectory',
+      'The Present': 'present', 'The Challenge': 'challenge', 'The Foundation': 'foundation',
+      'The Past': 'past', 'The Crown': 'bestOutcome', 'The Near Future': 'recentPast',
+      'Self': 'self', 'Environment': 'environment', 'Hopes & Fears': 'hopes', 'Outcome': 'outcome',
+    }
+    return t(map[name] || name)
+  }
+
   return (
     <motion.div
       className="flex flex-col items-center"
@@ -73,15 +91,15 @@ function ReadingView({ readingData, onBack }) {
           whileTap={{ scale: 0.95 }}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm">Back</span>
+          <span className="text-sm">{t('back')}</span>
         </motion.button>
 
         <div className="text-center">
-          <h2 className="text-lg md:text-xl font-semibold text-cream" 
+          <h2 className="text-lg md:text-xl font-semibold text-cream"
               style={{ fontFamily: "'DM Serif Display', serif" }}>
             {config.name}
           </h2>
-          <p className="text-white/30 text-xs">{config.cardCount}-card reading</p>
+          <p className="text-white/30 text-xs">{config.cardCount} {t('cardReading')}</p>
         </div>
 
         <motion.button
@@ -128,7 +146,7 @@ function ReadingView({ readingData, onBack }) {
               animate={{ opacity: [0.4, 0.7, 0.4] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              The cards are aligning...
+              {t('theCardsAreAligning')}
             </motion.p>
           </motion.div>
         </motion.div>
@@ -139,13 +157,13 @@ function ReadingView({ readingData, onBack }) {
         <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-10 md:mb-14 w-full max-w-5xl">
         {cards.map((card, index) => (
           <div key={card.id} className="flex flex-col items-center gap-3">
-            <motion.span 
+            <motion.span
               className="text-white/30 text-[10px] font-medium uppercase tracking-[0.15em] text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: phase === 'dealing' ? 0 : 1 }}
               transition={{ delay: index * 0.15 + 0.3 }}
             >
-              {config.positions[index]?.name || `Card ${index + 1}`}
+              {translatePositionName(config.positions[index]?.name || `Card ${index + 1}`)}
             </motion.span>
             <TarotCard
               card={card}
@@ -168,7 +186,7 @@ function ReadingView({ readingData, onBack }) {
           animate={{ opacity: [0.25, 0.5, 0.25] }}
           transition={{ repeat: Infinity, duration: 3 }}
         >
-          Tap a card to reveal its message
+          {t('tapCardToReveal')}
         </motion.p>
       )}
 
@@ -184,7 +202,7 @@ function ReadingView({ readingData, onBack }) {
             <div className="glass-panel p-5 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-5 h-5 text-mystic-400" />
-                <h3 className="text-lg font-semibold text-cream">Card Meanings</h3>
+                <h3 className="text-lg font-semibold text-cream">{t('cardMeanings')}</h3>
               </div>
 
               <div className="space-y-5">
@@ -198,17 +216,17 @@ function ReadingView({ readingData, onBack }) {
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <h4 className="text-mystic-400 font-medium text-sm">
-                        {config.positions[index]?.name}
+                        {translatePositionName(config.positions[index]?.name)}
                       </h4>
-                      <span className="text-white/15">·</span>
+                      <span className="text-white/15">\u00b7</span>
                       <h5 className="text-cream font-medium text-sm">{card.name}</h5>
                       {card.isReversed && (
                         <span className="text-[10px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded uppercase tracking-wider">
-                          Rev
+                          {t('rev')}
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {card.keywords.slice(0, 3).map((keyword, kidx) => (
                         <span key={kidx} className="text-[10px] bg-white/5 text-white/40 px-2 py-0.5 rounded-full">
@@ -234,12 +252,12 @@ function ReadingView({ readingData, onBack }) {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Sparkles className="w-4 h-4 text-cosmic-400" />
-                    <h4 className="text-cream font-medium text-sm">Today's Insight</h4>
+                    <h4 className="text-cream font-medium text-sm">{t('todayInsight')}</h4>
                   </div>
                   <p className="text-white/50 leading-relaxed text-sm">
-                    {cards[0].isReversed 
-                      ? `Today, ${cards[0].name} (reversed) invites gentle self-reflection. ${cards[0].reversed} This is a moment to pause, breathe, and trust the process of inner growth.`
-                      : `Today, ${cards[0].name} (upright) brings supportive energy your way. ${cards[0].upright} Embrace this guidance as you navigate your day with intention.`
+                    {cards[0].isReversed
+                      ? t('todayReversed', { name: cards[0].name, meaning: cards[0].reversed })
+                      : t('todayUpright', { name: cards[0].name, meaning: cards[0].upright })
                     }
                   </p>
                 </motion.div>

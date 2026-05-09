@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookOpen, ChevronDown, ThumbsUp, ThumbsDown, Trash2 } from 'lucide-react'
 import { getHistory, updateFeedback, deleteFromHistory } from '../utils/storage'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function HistoryJournal() {
   const [history, setHistory] = useState(getHistory())
   const [expandedId, setExpandedId] = useState(null)
+  const { t } = useLanguage()
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id)
@@ -23,11 +25,11 @@ function HistoryJournal() {
 
   const formatDate = (isoString) => {
     const date = new Date(isoString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit', 
-      minute: '2-digit' 
+      hour: '2-digit',
+      minute: '2-digit'
     })
   }
 
@@ -39,8 +41,8 @@ function HistoryJournal() {
     return (
       <div className="text-center py-16">
         <BookOpen className="w-12 h-12 text-white/10 mx-auto mb-4" />
-        <h3 className="text-cream font-medium mb-1">No readings yet</h3>
-        <p className="text-white/30 text-sm">Your readings will appear here once you start.</p>
+        <h3 className="text-cream font-medium mb-1">{t('noHistory')}</h3>
+        <p className="text-white/30 text-sm">{t('readingsWillAppear')}</p>
       </div>
     )
   }
@@ -54,8 +56,8 @@ function HistoryJournal() {
             <BookOpen className="w-5 h-5 text-mystic-400" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-cream">Reading History</h3>
-            <p className="text-white/30 text-xs">{history.length} readings saved</p>
+            <h3 className="text-lg font-semibold text-cream">{t('readingHistory')}</h3>
+            <p className="text-white/30 text-xs">{history.length} {t('cardReading')}</p>
           </div>
         </div>
       </div>
@@ -78,8 +80,8 @@ function HistoryJournal() {
               <span className="text-lg">{record.spreadType === 'single' ? '✦' : '◈'}</span>
               <div>
                 <div className="text-cream font-medium text-sm">
-                  {record.spreadType === 'single' ? 'Daily Card' : 'Spread Reading'}
-                  {record.cards?.length > 1 && ` · ${record.cards.length} cards`}
+                  {record.spreadType === 'single' ? t('dailyCard') : t('spreadReading')}
+                  {record.cards?.length > 1 && ` · ${record.cards.length} ${t('cardReading')}`}
                 </div>
                 <div className="text-white/30 text-xs">{formatDate(record.createdAt)}</div>
               </div>
@@ -107,7 +109,7 @@ function HistoryJournal() {
                   {/* User question */}
                   {record.userQuestion && (
                     <div className="p-3 bg-white/[0.02] rounded-xl">
-                      <p className="text-white/30 text-xs mb-1">Your question</p>
+                      <p className="text-white/30 text-xs mb-1">{t('yourQuestion')}</p>
                       <p className="text-cream/70 text-sm italic">"{record.userQuestion}"</p>
                     </div>
                   )}
@@ -121,7 +123,7 @@ function HistoryJournal() {
                         </span>
                         {card.isReversed && (
                           <span className="text-[10px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded uppercase tracking-wider">
-                            Rev
+                            {t('rev')}
                           </span>
                         )}
                       </div>
@@ -130,7 +132,7 @@ function HistoryJournal() {
 
                   {/* Feedback */}
                   <div className="flex items-center gap-3 pt-2 border-t border-white/5">
-                    <span className="text-white/30 text-xs">Was this accurate?</span>
+                    <span className="text-white/30 text-xs">{t('wasAccurate')}</span>
                     <button
                       onClick={() => handleFeedback(record.id, 'accurate')}
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs transition-colors
@@ -139,7 +141,7 @@ function HistoryJournal() {
                                    : 'bg-white/5 text-white/30 hover:bg-white/10'}`}
                     >
                       <ThumbsUp className="w-3 h-3" />
-                      Yes
+                      {t('yes')}
                     </button>
                     <button
                       onClick={() => handleFeedback(record.id, 'inaccurate')}
@@ -149,7 +151,7 @@ function HistoryJournal() {
                                    : 'bg-white/5 text-white/30 hover:bg-white/10'}`}
                     >
                       <ThumbsDown className="w-3 h-3" />
-                      Not really
+                      {t('notReally')}
                     </button>
                     <button
                       onClick={() => handleDelete(record.id)}
@@ -157,7 +159,7 @@ function HistoryJournal() {
                                  text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                     >
                       <Trash2 className="w-3 h-3" />
-                      Delete
+                      {t('delete')}
                     </button>
                   </div>
                 </div>
@@ -171,14 +173,14 @@ function HistoryJournal() {
       {history.length > 3 && (
         <button
           onClick={() => {
-            if (window.confirm('Clear all reading history? This cannot be undone.')) {
+            if (window.confirm(t('confirmClear'))) {
               localStorage.removeItem('tarot_history')
               setHistory([])
             }
           }}
           className="w-full py-3 text-white/20 text-xs hover:text-red-400 transition-colors"
         >
-          Clear all history
+          {t('clearAll')}
         </button>
       )}
     </div>

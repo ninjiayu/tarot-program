@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function TarotCard({ card, index, isRevealed, onReveal, size = "normal", isDealing = false }) {
+  const { t } = useLanguage()
   const sizeClasses = {
     small: "w-20 h-32 md:w-24 md:h-40",
     normal: "w-28 h-44 md:w-36 md:h-56",
@@ -215,7 +217,7 @@ function TarotCard({ card, index, isRevealed, onReveal, size = "normal", isDeali
                 transition={{ delay: 1, duration: 0.4 }}
               >
                 <div className="bg-mystic-500/20 backdrop-blur-sm border border-mystic-400/20 text-mystic-300 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Reversed
+                  {t('reversed')}
                 </div>
               </motion.div>
             )}

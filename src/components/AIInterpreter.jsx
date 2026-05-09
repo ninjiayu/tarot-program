@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, Sparkles, Clock, AlertCircle, Crown } from 'lucide-react'
 import { getDailyReadingCount, useDailyReading } from '../utils/storage'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 // AI Reading Generator — replace simulateAIReading with real API when ready
 async function simulateAIReading(spreadType, cards, userQuestion) {
@@ -23,8 +24,8 @@ async function simulateAIReading(spreadType, cards, userQuestion) {
     single: {
       basic: `Your card today is **${card.name}** ${card.isReversed ? '(reversed)' : '(upright)'}.
 
-This card carries the energy of ${cardKeywords}. ${card.isReversed 
-  ? 'When reversed, it gently asks you to look inward — where might you be resisting growth? This isn\'t a warning, just an invitation to pause and reflect.' 
+This card carries the energy of ${cardKeywords}. ${card.isReversed
+  ? 'When reversed, it gently asks you to look inward — where might you be resisting growth? This isn\'t a warning, just an invitation to pause and reflect.'
   : 'Upright, this energy is actively supporting you. Lean into it today.'}
 
 Take a quiet moment to notice where this theme shows up in your day.`,
@@ -35,14 +36,14 @@ Today the cards have drawn you **${card.name}** — and there's something beauti
 
 ${card.description}
 
-${card.isReversed 
+${card.isReversed
   ? `When ${card.name} appears reversed, it's not something to fear. Think of it as the universe tapping you gently on the shoulder, saying: *"Hey, let's look at this together."*
 
 ${card.reversed}
 
 Here's what I'd gently suggest: find five minutes of stillness today. Breathe. Ask yourself — *"What am I holding onto that I'm ready to release?"* The answer that comes first is usually the truest one.
 
-You don't need to have everything figured out. You just need to be honest with yourself.` 
+You don't need to have everything figured out. You just need to be honest with yourself.`
   : `${card.name} upright is a warm, affirming presence. ${card.upright}
 
 The universe is essentially saying: *You're on the right path.* Keep going. Let ${card.keywords[0]} be your compass today — when things feel uncertain, come back to that word. What would it look like to embody it, even in a small way?
@@ -74,24 +75,24 @@ Let me walk you through this reading, card by card. Each position holds a piece 
 
 ${cards[0].description}
 
-This card in the past position tells us that ${cards[0].keywords[0]} has been a defining theme in your journey. ${cards[0].isReversed 
-  ? 'The reversed position suggests there may still be something here asking for your attention — something you haven\'t fully processed yet. That\'s okay. Some lessons take time.' 
+This card in the past position tells us that ${cards[0].keywords[0]} has been a defining theme in your journey. ${cards[0].isReversed
+  ? 'The reversed position suggests there may still be something here asking for your attention — something you haven\'t fully processed yet. That\'s okay. Some lessons take time.'
   : 'It laid the foundation for where you are now, and its gifts are still with you.'}
 
 **The Present — ${cards[1].name}** ${cards[1].isReversed ? '(reversed)' : '(upright)'}
 
 ${cards[1].description}
 
-This is where you stand right now: in the energy of ${cards[1].keywords[0]}. ${cards[1].isReversed 
-  ? 'You might feel a bit untethered or unsure — but uncertainty is often the doorway to deeper clarity. Trust that feeling.' 
+This is where you stand right now: in the energy of ${cards[1].keywords[0]}. ${cards[1].isReversed
+  ? 'You might feel a bit untethered or unsure — but uncertainty is often the doorway to deeper clarity. Trust that feeling.'
   : 'This is powerful energy to be in. Embrace it fully.'}
 
 **The Future — ${cards[2].name}** ${cards[2].isReversed ? '(reversed)' : '(upright)'}
 
 ${cards[2].description}
 
-Looking ahead, the energy of ${cards[2].keywords[0]} is moving toward you. ${cards[2].isReversed 
-  ? 'A reversed future card isn\'t a bad omen — it\'s an invitation. If you want a different outcome, the power to shift things is already in your hands.' 
+Looking ahead, the energy of ${cards[2].keywords[0]} is moving toward you. ${cards[2].isReversed
+  ? 'A reversed future card isn\'t a bad omen — it\'s an invitation. If you want a different outcome, the power to shift things is already in your hands.'
   : 'Something beautiful is unfolding. Move toward it with an open heart.'}
 
 ---
@@ -109,7 +110,7 @@ Remember — the cards don't predict your future. They reflect the energies surr
   }
 
   const cardData = interpretations[spreadType] || interpretations.single
-  
+
   return {
     basic: userQuestion ? `Regarding your question — *"${userQuestion}"*\n\n${cardData.basic}` : cardData.basic,
     deep: userQuestion ? `I hear you. Let's explore *"${userQuestion}"* together through these cards.\n\n${cardData.deep}` : cardData.deep
@@ -130,8 +131,8 @@ function generateActionAdvice(card) {
 
 function generateTimelineInsight(cards) {
   const hasReversed = cards.some(c => c.isReversed)
-  return `The journey from ${cards[0].keywords[0]} through ${cards[1].keywords[0]} toward ${cards[2].keywords[0]} is a story of transformation. ${hasReversed 
-    ? 'The reversed cards suggest there are gentle lessons woven in — moments asking you to slow down and look a little deeper. These aren\'t obstacles, they\'re invitations.' 
+  return `The journey from ${cards[0].keywords[0]} through ${cards[1].keywords[0]} toward ${cards[2].keywords[0]} is a story of transformation. ${hasReversed
+    ? 'The reversed cards suggest there are gentle lessons woven in — moments asking you to slow down and look a little deeper. These aren\'t obstacles, they\'re invitations.'
     : 'The energy flows naturally and positively. Things are aligning in your favor.'}`
 }
 
@@ -149,6 +150,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
   const [error, setError] = useState(null)
   const dailyCount = getDailyReadingCount()
   const hasFreeQuota = dailyCount.count < 1
+  const { t } = useLanguage()
 
   const handleInterpret = async (interpretMode) => {
     setLoading(true)
@@ -160,7 +162,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
       const aiResult = await simulateAIReading(spreadType, cards, userQuestion)
       setResult(aiResult[interpretMode])
     } catch (err) {
-      setError('Something went wrong. Please try again.')
+      setError(t('somethingWrong'))
     } finally {
       setLoading(false)
     }
@@ -174,15 +176,15 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
           <MessageSquare className="w-5 h-5 text-mystic-400" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-cream">AI-Powered Insight</h3>
-          <p className="text-white/30 text-xs">Personalized reading interpretation</p>
+          <h3 className="text-lg font-semibold text-cream">{t('aiPoweredInsight')}</h3>
+          <p className="text-white/30 text-xs">{t('personalizedReading')}</p>
         </div>
       </div>
 
       {/* User question */}
       {userQuestion && (
         <div className="mb-6 p-4 bg-white/[0.03] rounded-2xl border border-white/5">
-          <p className="text-white/40 text-xs mb-1">Your question</p>
+          <p className="text-white/40 text-xs mb-1">{t('yourQuestion')}</p>
           <p className="text-cream/80 text-sm italic">"{userQuestion}"</p>
         </div>
       )}
@@ -194,16 +196,16 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
             onClick={() => handleInterpret('basic')}
             disabled={!hasFreeQuota}
             className={`p-4 rounded-2xl border text-left transition-all
-                       ${hasFreeQuota 
-                         ? 'border-white/10 hover:bg-white/[0.03]' 
+                       ${hasFreeQuota
+                         ? 'border-white/10 hover:bg-white/[0.03]'
                          : 'border-white/5 opacity-40 cursor-not-allowed'}`}
           >
             <div className="flex items-center gap-2 mb-2">
               <Clock className="w-4 h-4 text-mystic-400" />
-              <span className="text-cream font-medium text-sm">Quick Insight</span>
+              <span className="text-cream font-medium text-sm">{t('quickInsight')}</span>
             </div>
             <p className="text-white/30 text-xs">
-              {hasFreeQuota ? 'Free today' : 'Come back tomorrow'}
+              {hasFreeQuota ? t('freeToday') : t('comeBackTomorrow')}
             </p>
           </button>
 
@@ -213,9 +215,9 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
           >
             <div className="flex items-center gap-2 mb-2">
               <Crown className="w-4 h-4 text-cosmic-400" />
-              <span className="text-cosmic-400 font-medium text-sm">Deep Reading</span>
+              <span className="text-cosmic-400 font-medium text-sm">{t('deepReading')}</span>
             </div>
-            <p className="text-white/30 text-xs">500+ words · Guidance · Action steps</p>
+            <p className="text-white/30 text-xs">{t('deepReadingDesc')}</p>
           </button>
         </div>
       )}
@@ -233,7 +235,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
           >
             <Sparkles className="w-6 h-6 text-mystic-400/60" />
           </motion.div>
-          <p className="text-white/40 text-sm mt-4">Crafting your reading...</p>
+          <p className="text-white/40 text-sm mt-4">{t('craftingReading')}</p>
         </motion.div>
       )}
 
@@ -252,7 +254,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
                 <Clock className="w-4 h-4 text-mystic-400" />
               )}
               <span className={`font-medium text-sm ${mode === 'deep' ? 'text-cosmic-400' : 'text-mystic-400'}`}>
-                {mode === 'deep' ? 'Deep Reading' : 'Quick Insight'}
+                {mode === 'deep' ? t('deepReading') : t('quickInsight')}
               </span>
             </div>
 
@@ -264,7 +266,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
               onClick={() => { setMode(null); setResult(null) }}
               className="mt-4 text-white/30 text-sm hover:text-white/50 transition-colors"
             >
-              Choose another reading type
+              {t('chooseAnother')}
             </button>
           </motion.div>
         )}
@@ -281,7 +283,7 @@ function AIInterpreter({ spreadType, cards, userQuestion }) {
       {/* Disclaimer */}
       <div className="mt-4 flex items-start gap-2 text-white/20 text-xs">
         <AlertCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
-        <p>AI-generated readings are for self-reflection and entertainment. They don't replace professional guidance.</p>
+        <p>{t('aiDisclaimer')}</p>
       </div>
     </div>
   )

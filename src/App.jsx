@@ -6,13 +6,15 @@ import Disclaimer from './components/Disclaimer'
 import Journal from './components/Journal'
 import MoodTracker from './components/MoodTracker'
 import { getSettings, resetDisclaimer } from './utils/storage'
-import { Sparkles, BookOpen, Heart, Shield } from 'lucide-react'
+import { useLanguage } from './contexts/LanguageContext.jsx'
+import { Sparkles, BookOpen, Heart, Shield, Globe } from 'lucide-react'
 
 function App() {
   const [currentView, setCurrentView] = useState('home')
   const [readingData, setReadingData] = useState(null)
   const [showDisclaimer, setShowDisclaimer] = useState(!getSettings().disclaimerAccepted)
   const [activeTab, setActiveTab] = useState('readings') // readings | journal | mood
+  const { lang, setLang, t } = useLanguage()
 
   const handleStartReading = (type, cards, userQuestion) => {
     setReadingData({ type, cards, userQuestion })
@@ -53,42 +55,58 @@ function App() {
             </h1>
           </div>
 
-          {/* Nav tabs */}
+          {/* Nav tabs + Language switch */}
           {currentView === 'home' && (
-            <nav className="flex items-center gap-1 bg-white/5 rounded-full p-1">
+            <nav className="flex items-center gap-2">
+              <div className="flex items-center gap-1 bg-white/5 rounded-full p-1">
+                <button
+                  onClick={() => setActiveTab('readings')}
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all
+                             ${activeTab === 'readings'
+                               ? 'bg-mystic-500/20 text-mystic-300'
+                               : 'text-white/40 hover:text-white/60'}`}
+                >
+                  {t('readings')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('journal')}
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all
+                             ${activeTab === 'journal'
+                               ? 'bg-mystic-500/20 text-mystic-300'
+                               : 'text-white/40 hover:text-white/60'}`}
+                  title={t('journal')}
+                >
+                  <BookOpen className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setActiveTab('mood')}
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all
+                             ${activeTab === 'mood'
+                               ? 'bg-mystic-500/20 text-mystic-300'
+                               : 'text-white/40 hover:text-white/60'}`}
+                  title={t('mood')}
+                >
+                  <Heart className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => { resetDisclaimer(); setShowDisclaimer(true); }}
+                  className="px-2 py-1.5 rounded-full text-white/25 hover:text-white/50 transition-colors"
+                  title={t('viewDisclaimer')}
+                >
+                  <Shield className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Language switcher */}
               <button
-                onClick={() => setActiveTab('readings')}
-                className={`px-3 py-1.5 rounded-full text-sm transition-all
-                           ${activeTab === 'readings' 
-                             ? 'bg-mystic-500/20 text-mystic-300' 
-                             : 'text-white/40 hover:text-white/60'}`}
+                onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium
+                           bg-white/5 text-white/50 hover:text-white/80 hover:bg-white/10
+                           transition-all border border-white/10"
+                title={lang === 'en' ? 'Switch to Chinese' : 'Switch to English'}
               >
-                Readings
-              </button>
-              <button
-                onClick={() => setActiveTab('journal')}
-                className={`px-3 py-1.5 rounded-full text-sm transition-all
-                           ${activeTab === 'journal' 
-                             ? 'bg-mystic-500/20 text-mystic-300' 
-                             : 'text-white/40 hover:text-white/60'}`}
-              >
-                <BookOpen className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setActiveTab('mood')}
-                className={`px-3 py-1.5 rounded-full text-sm transition-all
-                           ${activeTab === 'mood' 
-                             ? 'bg-mystic-500/20 text-mystic-300' 
-                             : 'text-white/40 hover:text-white/60'}`}
-              >
-                <Heart className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => { resetDisclaimer(); setShowDisclaimer(true); }}
-                className="px-2 py-1.5 rounded-full text-white/25 hover:text-white/50 transition-colors"
-                title="View disclaimer"
-              >
-                <Shield className="w-3.5 h-3.5" />
+                <Globe className="w-3.5 h-3.5" />
+                <span>{lang === 'en' ? 'EN' : '中'}</span>
               </button>
             </nav>
           )}
@@ -153,7 +171,7 @@ function App() {
       {/* Footer */}
       <footer className="relative z-10 py-6 text-center">
         <p className="text-white/20 text-xs px-4">
-          For entertainment and self-reflection purposes only. Not a substitute for professional advice.
+          {t('footerText')}
         </p>
       </footer>
     </div>
