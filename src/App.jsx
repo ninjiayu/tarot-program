@@ -168,8 +168,8 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-6 text-center">
+      {/* Footer - fixed at bottom */}
+      <footer className="fixed bottom-0 left-0 right-0 z-10 py-4 text-center bg-void/80 backdrop-blur-sm">
         <p className="text-white/20 text-xs px-4">
           {t('footerText')}
         </p>
