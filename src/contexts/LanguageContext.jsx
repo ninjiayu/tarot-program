@@ -148,6 +148,11 @@ const translations = {
     ageRequirement: 'Age Requirement',
     accept: 'I understand and accept',
     proceed: 'Proceed',
+    disclaimerEntertainmentBody: 'For entertainment and self-reflection purposes only. Not a substitute for professional advice.',
+    disclaimerProfessionalBody: 'If you\'re facing significant life decisions, we encourage consulting qualified professionals — therapists, counselors, or legal advisors.',
+    disclaimerAIBody: 'Our AI interpretations are generated using large language models. While we aim for thoughtful, empathetic responses, they may not always be accurate or applicable to your situation.',
+    disclaimerPrivacyBody: 'All your reading history, journal entries, and mood data are stored locally on your device. We don\'t collect, upload, or share any personal information.',
+    disclaimerAgeBody: 'Users under 18 should use this app with parental guidance. Please don\'t use Loran Tarot for any unlawful or harmful purposes.',
 
     // Spread names (from spreadData)
     singleSpread: 'Single Card',
@@ -325,10 +330,15 @@ const translations = {
     entertainmentReflection: '娱乐与反思',
     notProfessionalAdvice: '非专业建议',
     aiGenerated: 'AI 生成解读',
-    privacy: '隐私',
+    privacy: '隐私保护',
     ageRequirement: '年龄要求',
-    accept: '我理解并接受',
+    accept: '我已阅读并接受',
     proceed: '继续',
+    disclaimerEntertainmentBody: '本应用仅供娱乐和自我反思之用，不能替代任何专业建议。',
+    disclaimerProfessionalBody: '如果你正面临重大人生决定，建议咨询专业人士——心理咨询师、职业顾问或法律顾问。',
+    disclaimerAIBody: 'AI 解读由大语言模型生成。虽然我们力求回复贴心、有启发，但内容不一定完全准确或适用于你的具体情况。',
+    disclaimerPrivacyBody: '你的所有占卜记录、日记和心情数据均存储在本地设备上，我们不会收集、上传或分享任何个人信息。',
+    disclaimerAgeBody: '未满 18 岁的用户请在家长指导下使用。请勿将本应用用于任何违法或有害目的。',
 
     // Spread names
     singleSpread: '单张牌',

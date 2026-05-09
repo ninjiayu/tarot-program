@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, AlertCircle, Check } from 'lucide-react'
+import { Shield, AlertCircle, Check, X } from 'lucide-react'
 import { acceptDisclaimer } from '../utils/storage'
 import { useLanguage } from '../contexts/LanguageContext.jsx'
 
@@ -13,6 +13,15 @@ function Disclaimer({ onAccept, onClose }) {
     onAccept?.()
   }
 
+  const handleClose = () => {
+    // If onClose is provided, use it; otherwise use onAccept to dismiss
+    if (onClose) {
+      onClose()
+    } else {
+      onAccept?.()
+    }
+  }
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-void/90 p-4 backdrop-blur-sm"
@@ -21,11 +30,20 @@ function Disclaimer({ onAccept, onClose }) {
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className="glass-panel max-w-lg w-full p-6 md:p-8 max-h-[85vh] overflow-y-auto"
+        className="glass-panel max-w-lg w-full p-6 md:p-8 max-h-[85vh] overflow-y-auto relative"
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: 'spring', damping: 25 }}
       >
+        {/* Close button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center
+                     text-white/30 hover:text-white/70 hover:bg-white/10 transition-all"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-11 h-11 rounded-full bg-mystic-500/10 flex items-center justify-center">
@@ -52,27 +70,27 @@ function Disclaimer({ onAccept, onClose }) {
           <div className="space-y-3">
             <p>
               <strong className="text-cream/80">{t('entertainmentReflection')}</strong><br />
-              {t('footerText')}
+              {t('disclaimerEntertainmentBody')}
             </p>
 
             <p>
               <strong className="text-cream/80">{t('notProfessionalAdvice')}</strong><br />
-              If you're facing significant life decisions, we encourage consulting qualified professionals — therapists, counselors, or legal advisors.
+              {t('disclaimerProfessionalBody')}
             </p>
 
             <p>
               <strong className="text-cream/80">{t('aiGenerated')}</strong><br />
-              Our AI interpretations are generated using large language models. While we aim for thoughtful, empathetic responses, they may not always be accurate or applicable to your situation.
+              {t('disclaimerAIBody')}
             </p>
 
             <p>
               <strong className="text-cream/80">{t('privacy')}</strong><br />
-              All your reading history, journal entries, and mood data are stored locally on your device. We don't collect, upload, or share any personal information.
+              {t('disclaimerPrivacyBody')}
             </p>
 
             <p>
               <strong className="text-cream/80">{t('ageRequirement')}</strong><br />
-              Users under 18 should use this app with parental guidance. Please don't use Loran Tarot for any unlawful or harmful purposes.
+              {t('disclaimerAgeBody')}
             </p>
           </div>
         </div>
@@ -92,15 +110,6 @@ function Disclaimer({ onAccept, onClose }) {
 
         {/* Actions */}
         <div className="flex gap-3">
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white/40
-                         hover:bg-white/5 transition-colors text-sm"
-            >
-              {t('maybeLater')}
-            </button>
-          )}
           <button
             onClick={handleAccept}
             disabled={!hasRead}

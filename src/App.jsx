@@ -7,7 +7,7 @@ import Journal from './components/Journal'
 import MoodTracker from './components/MoodTracker'
 import { getSettings, resetDisclaimer } from './utils/storage'
 import { useLanguage } from './contexts/LanguageContext.jsx'
-import { Sparkles, BookOpen, Heart, Shield, Globe } from 'lucide-react'
+import { Sparkles, BookOpen, Heart, Shield, Globe, Layers } from 'lucide-react'
 
 function App() {
   const [currentView, setCurrentView] = useState('home')
@@ -65,8 +65,9 @@ function App() {
                              ${activeTab === 'readings'
                                ? 'bg-mystic-500/20 text-mystic-300'
                                : 'text-white/40 hover:text-white/60'}`}
+                  title={t('readings')}
                 >
-                  {t('readings')}
+                  <Layers className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setActiveTab('journal')}
