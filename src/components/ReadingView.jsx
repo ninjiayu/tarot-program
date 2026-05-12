@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, RefreshCw, BookOpen, Sparkles } from 'lucide-react'
 import TarotCard from './TarotCard'
@@ -7,14 +7,16 @@ import ShufflingAnimation from './ShufflingAnimation'
 import { getSpreadConfig } from '../data/spreadData'
 import { saveToHistory } from '../utils/storage'
 import { useLanguage } from '../contexts/LanguageContext.jsx'
+import { localizeCards } from '../utils/localizeCard'
 
 function ReadingView({ readingData, onBack }) {
   const [phase, setPhase] = useState('shuffling') // shuffling | dealing | ready | interpreting
   const [revealedCards, setRevealedCards] = useState(new Set())
   const [showInterpretation, setShowInterpretation] = useState(false)
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
-  const { type, cards, userQuestion } = readingData
+  const { type, cards: rawCards, userQuestion } = readingData
+  const cards = useMemo(() => localizeCards(rawCards, lang), [rawCards, lang])
   const config = getSpreadConfig(type)
 
   // Phase transitions
