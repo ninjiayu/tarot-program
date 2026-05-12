@@ -34,7 +34,7 @@ const moodOptions = [
 function MoodTracker() {
   const [moods, setMoods] = useState(getMoodHistory())
   const todayMood = moods.find(m => m.date === getTodayKey())
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const handleLogMood = (mood) => {
     const existing = moods.filter(m => m.date !== getTodayKey())
@@ -49,7 +49,7 @@ function MoodTracker() {
     date.setDate(date.getDate() - (6 - i))
     const key = date.toISOString().split('T')[0]
     const entry = moods.find(m => m.date === key)
-    return { date: key, day: date.toLocaleDateString('en-US', { weekday: 'short' }), mood: entry?.mood }
+    return { date: key, day: date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { weekday: 'short' }), mood: entry?.mood }
   })
 
   // Average mood

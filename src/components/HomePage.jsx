@@ -78,6 +78,22 @@ function HomePage({ onStartReading }) {
     return t(map[name] || name)
   }
 
+  const translatePositionMeaning = (name) => {
+    const map = {
+      "Today's Energy": 'meaningTodayEnergy',
+      'Past': 'meaningPast', 'Present': 'meaningPresent', 'Future': 'meaningFuture',
+      'Root Cause': 'meaningRootCause', 'Current State': 'meaningCurrentState', 'Guidance': 'meaningGuidance',
+      'Current Situation': 'meaningSituation', 'Path A': 'meaningPathA', 'Outcome A': 'meaningOutcomeA',
+      'Path B': 'meaningPathB', 'Outcome B': 'meaningOutcomeB',
+      'Your Feelings': 'meaningYou', 'Their Feelings': 'meaningPartner', 'Current Dynamic': 'meaningDynamic',
+      'Your Block': 'meaningYourBlock', 'Their Block': 'meaningTheirBlock', 'Trajectory': 'meaningTrajectory',
+      'The Present': 'meaningCelticPresent', 'The Challenge': 'meaningChallenge', 'The Foundation': 'meaningFoundation',
+      'The Past': 'meaningCelticPast', 'The Crown': 'meaningBestOutcome', 'The Near Future': 'meaningRecentPast',
+      'Self': 'meaningSelf', 'Environment': 'meaningEnvironment', 'Hopes & Fears': 'meaningHopes', 'Outcome': 'meaningOutcome',
+    }
+    return t(map[name] || name)
+  }
+
   return (
     <motion.div
       className="flex flex-col items-center pt-8 md:pt-12"
@@ -199,7 +215,7 @@ function HomePage({ onStartReading }) {
                 {selectedSpread.positions.map((pos, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-sm">
                     <span className="text-mystic-400 font-medium w-24 flex-shrink-0">{translatePositionName(pos.name)}</span>
-                    <span className="text-white/40">{pos.meaning}</span>
+                    <span className="text-white/40">{translatePositionMeaning(pos.name)}</span>
                   </div>
                 ))}
               </div>

@@ -1,9 +1,30 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Info, Lock } from 'lucide-react'
 import { getAllSpreads, featureConfig } from '../data/spreadData'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
+
+const spreadKeyMap = {
+  single: { nameKey: 'singleSpread', descKey: 'singleDesc' },
+  three: { nameKey: 'threeSpread', descKey: 'threeDesc' },
+  holyTrinity: { nameKey: 'holyTrinity', descKey: 'holyTrinityDesc' },
+  choice: { nameKey: 'crossroads', descKey: 'crossroadsDesc' },
+  relationship: { nameKey: 'connection', descKey: 'connectionDesc' },
+  celticCross: { nameKey: 'celticCross', descKey: 'celticCrossDesc' },
+}
 
 function SpreadLibrary({ onSelect, onBack, isPremium = false }) {
   const spreads = getAllSpreads()
+  const { t } = useLanguage()
+
+  const getSpreadName = (spread) => {
+    const key = spreadKeyMap[spread.id]?.nameKey
+    return key ? t(key) : spread.name
+  }
+
+  const getSpreadDesc = (spread) => {
+    const key = spreadKeyMap[spread.id]?.descKey
+    return key ? t(key) : spread.description
+  }
 
   return (
     <motion.div
@@ -22,14 +43,14 @@ function SpreadLibrary({ onSelect, onBack, isPremium = false }) {
           whileTap={{ scale: 0.95 }}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm">Back</span>
+          <span className="text-sm">{t('back')}</span>
         </motion.button>
 
         <div className="text-center">
           <h2 className="text-xl font-semibold text-cream" style={{ fontFamily: "'DM Serif Display', serif" }}>
-            Spread Library
+            {t('spreadLibrary')}
           </h2>
-          <p className="text-white/30 text-xs">Choose your reading style</p>
+          <p className="text-white/30 text-xs">{t('chooseReadingStyle')}</p>
         </div>
 
         <div className="w-16" />
@@ -64,20 +85,20 @@ function SpreadLibrary({ onSelect, onBack, isPremium = false }) {
               </div>
 
               <h3 className="text-cream font-semibold text-sm mb-1" style={{ fontFamily: "'DM Serif Display', serif" }}>
-                {spread.name}
+                {getSpreadName(spread)}
               </h3>
               <p className="text-white/40 text-xs leading-relaxed mb-3">
-                {spread.description}
+                {getSpreadDesc(spread)}
               </p>
 
               <div className="flex items-center gap-2 text-[10px] text-white/25 uppercase tracking-wider">
                 <Info className="w-3 h-3" />
-                <span>{spread.cardCount} cards · {spread.positions.length} positions</span>
+                <span>{spread.cardCount} {t('cardReading')}</span>
               </div>
 
               {!canAccess && (
                 <div className="absolute inset-0 bg-void/40 rounded-2xl flex items-center justify-center">
-                  <span className="text-white/60 text-xs font-medium">Members Only</span>
+                  <span className="text-white/60 text-xs font-medium">{t('membersOnly')}</span>
                 </div>
               )}
             </motion.div>
@@ -93,12 +114,12 @@ function SpreadLibrary({ onSelect, onBack, isPremium = false }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <h4 className="text-cosmic-400 font-semibold text-sm mb-1">Unlock All Spreads</h4>
+          <h4 className="text-cosmic-400 font-semibold text-sm mb-1">{t('unlockAllSpreads')}</h4>
           <p className="text-white/30 text-xs mb-3">
-            Get access to Crossroads, Connection, Celtic Cross and more.
+            {t('unlockAllSpreadsDesc')}
           </p>
           <button className="px-5 py-2 bg-gradient-cosmic text-void rounded-xl text-xs font-semibold hover:opacity-90 transition-opacity">
-            Become a Member
+            {t('becomeMember')}
           </button>
         </motion.div>
       )}

@@ -7,7 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext.jsx'
 function HistoryJournal() {
   const [history, setHistory] = useState(getHistory())
   const [expandedId, setExpandedId] = useState(null)
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id)
@@ -25,7 +25,7 @@ function HistoryJournal() {
 
   const formatDate = (isoString) => {
     const date = new Date(isoString)
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',

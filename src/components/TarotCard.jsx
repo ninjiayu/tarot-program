@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useLanguage } from '../contexts/LanguageContext.jsx'
 
 function TarotCard({ card, index, isRevealed, onReveal, size = "normal", isDealing = false }) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const sizeClasses = {
     small: "w-20 h-32 md:w-24 md:h-40",
     normal: "w-28 h-44 md:w-36 md:h-56",
@@ -205,7 +205,7 @@ function TarotCard({ card, index, isRevealed, onReveal, size = "normal", isDeali
                  card.number === 'queen' ? 'Q' :
                  card.number === 'king' ? 'K' : '?'}
               </span>
-              <span className="text-white/25 text-[10px] uppercase tracking-[0.2em]">{card.suit?.[0] || 'Major'}</span>
+              <span className="text-white/25 text-[10px] uppercase tracking-[0.2em]">{card.suit?.[0] || (lang === 'zh' ? '大' : 'Major')}</span>
             </div>
 
             {/* Reversed indicator */}

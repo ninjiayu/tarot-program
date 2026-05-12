@@ -31,14 +31,14 @@ function Journal() {
   const [entries, setEntries] = useState(getJournalEntries())
   const [showNewEntry, setShowNewEntry] = useState(false)
   const [newEntry, setNewEntry] = useState({ mood: null, text: '', title: '' })
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   const handleSave = () => {
     if (!newEntry.text.trim()) return
 
     const entry = {
       id: Date.now().toString(),
-      title: newEntry.title || 'Untitled Reflection',
+      title: newEntry.title || t('untitledReflection'),
       text: newEntry.text,
       mood: newEntry.mood,
       date: new Date().toISOString(),
@@ -59,7 +59,7 @@ function Journal() {
 
   const formatDate = (iso) => {
     const date = new Date(iso)
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'

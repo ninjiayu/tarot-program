@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext.jsx'
 
-function LoadingOverlay({ text = "Connecting to your intuition..." }) {
+function LoadingOverlay({ text }) {
+  const { t } = useLanguage()
+  const displayText = text || t('connectingToIntuition')
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-void/90 backdrop-blur-xl"
@@ -32,7 +35,7 @@ function LoadingOverlay({ text = "Connecting to your intuition..." }) {
         animate={{ opacity: [0.4, 0.8, 0.4] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        {text}
+        {displayText}
       </motion.p>
     </motion.div>
   )

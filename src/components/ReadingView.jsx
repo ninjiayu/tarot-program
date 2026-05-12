@@ -60,6 +60,20 @@ function ReadingView({ readingData, onBack }) {
 
   const allRevealed = revealedCards.size >= cards.length
 
+  const spreadKeyMap = {
+    single: 'singleSpread',
+    three: 'threeSpread',
+    holyTrinity: 'holyTrinity',
+    choice: 'crossroads',
+    relationship: 'connection',
+    celticCross: 'celticCross',
+  }
+
+  const getSpreadName = () => {
+    const key = spreadKeyMap[type]
+    return key ? t(key) : config.name
+  }
+
   const translatePositionName = (name) => {
     const map = {
       'Past': 'past', 'Present': 'present', 'Future': 'future',
@@ -99,7 +113,7 @@ function ReadingView({ readingData, onBack }) {
         <div className="text-center">
           <h2 className="text-lg md:text-xl font-semibold text-cream"
               style={{ fontFamily: "'DM Serif Display', serif" }}>
-            {config.name}
+            {getSpreadName()}
           </h2>
           <p className="text-white/30 text-xs">{config.cardCount} {t('cardReading')}</p>
         </div>
